@@ -11,6 +11,8 @@ import my.iobserve.userbehavior.modeling.parser.SequenceModelBuilder;
 
 public class ModelingMain {
 	
+	// Test test test test
+	
 	private final String csvDirectoryPath = "/Users/David/Uni/Masterarbeit/CsvFilesInput";
 
 	public static void main(String[] args) throws IOException {
