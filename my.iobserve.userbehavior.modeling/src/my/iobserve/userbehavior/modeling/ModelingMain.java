@@ -11,7 +11,7 @@ import my.iobserve.userbehavior.modeling.parser.SequenceModelBuilder;
 
 public class ModelingMain {
 	
-	// Test test test test
+	// Test 
 	
 	private final String csvDirectoryPath = "/Users/David/Uni/Masterarbeit/CsvFilesInput";
 
