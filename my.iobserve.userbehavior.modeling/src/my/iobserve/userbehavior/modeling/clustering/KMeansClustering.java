@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import my.iobserve.userbehavior.modeling.data.EntryCallSequenceModel;
+import my.iobserve.userbehavior.modeling.data.UserSessionAsAbsoluteTransitionMatrix;
 import weka.clusterers.SimpleKMeans;
 import weka.core.DistanceFunction;
 import weka.core.EuclideanDistance;
@@ -15,8 +16,12 @@ public class KMeansClustering extends AbstractClustering {
 		
 		
 		try {
-		
-			Instances instances = createInstances(sequenceModel.getUserSessions());
+			
+			List<String> calledMethods = createListOfDistinctCalledMethods(sequenceModel.getUserSessions());
+			List<UserSessionAsAbsoluteTransitionMatrix> absoluteTransitionModel = createAbsoluteTransitionUserSessions(sequenceModel.getUserSessions(), calledMethods);
+			
+//			Instances instances = createInstances(sequenceModel.getUserSessions());
+			Instances instances = createInstances(absoluteTransitionModel, calledMethods);
 			
 			SimpleKMeans kmeans = new SimpleKMeans();
 			DistanceFunction euclideanDistance = new EuclideanDistance();

@@ -57,6 +57,12 @@ public class UserSession {
 	public void setSessionId(String sessionId) {
 		this.sessionId = sessionId;
 	}
+	public String getSessionId() {
+		return sessionId;
+	}
+	/**
+	 * End of extension
+	 */
 
 	@Override
 	public String toString() {

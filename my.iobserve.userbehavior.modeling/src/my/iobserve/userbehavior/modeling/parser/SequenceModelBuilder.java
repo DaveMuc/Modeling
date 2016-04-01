@@ -61,10 +61,10 @@ public class SequenceModelBuilder {
 			        	exitTime = Long.parseLong(scanner.next(), 10);
 			            break;
 			        case 4:
-			        	operationSignature = scanner.next();
+			        	classSignature = scanner.next();
 			            break; 
 			        case 5:
-			        	classSignature = scanner.next();
+			        	operationSignature = scanner.next();
 			            break;
 			        case 6:
 			        	sessionId = scanner.next();
@@ -83,7 +83,7 @@ public class SequenceModelBuilder {
 				userSession.setSessionId(sessionId);
 				
 			}
-			
+			br.close();
 			sessions.add(userSession);
 		}
 		
