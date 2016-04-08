@@ -40,7 +40,7 @@ public abstract class AbstractClustering {
 		int numberOfMatrixElements = listOfCalledMethods.size()*listOfCalledMethods.size();
 		FastVector fvWekaAttributes = new FastVector(numberOfMatrixElements);
 		
-		for(int i=0;i<=numberOfMatrixElements;i++) {
+		for(int i=0;i<numberOfMatrixElements;i++) {
 			String attributeName = "Attribute"+i;
 			Attribute attribute = new Attribute(attributeName);
 			fvWekaAttributes.addElement(attribute);
@@ -93,13 +93,13 @@ public abstract class AbstractClustering {
 		
 	}
 	
-	protected List<UserSessionAsAbsoluteTransitionMatrix> createAbsoluteTransitionUserSessions(List<UserSession> sessions, List<String> listOfCalledMethods) {
+	protected List<UserSessionAsAbsoluteTransitionMatrix> createAbsoluteTransitionUserSessions(List<UserSession> sessions, List<String> distinctOperationSignatures) {
 		
 		List<UserSessionAsAbsoluteTransitionMatrix> absoluteTransitionModel = new ArrayList<UserSessionAsAbsoluteTransitionMatrix>(); 
 		
 		for(final UserSession userSession:sessions) {
 			
-			UserSessionAsAbsoluteTransitionMatrix transitionMatrix = new UserSessionAsAbsoluteTransitionMatrix(userSession.getSessionId(), listOfCalledMethods.size());
+			UserSessionAsAbsoluteTransitionMatrix transitionMatrix = new UserSessionAsAbsoluteTransitionMatrix(userSession.getSessionId(), distinctOperationSignatures.size());
 			List<EntryCallEvent> callSequence = userSession.getEvents();
 			
 			for(int i=0;i<callSequence.size()-1;i++) {
@@ -107,8 +107,8 @@ public abstract class AbstractClustering {
 				String currentCall = callSequence.get(i).getOperationSignature();
 				String subsequentCall = callSequence.get(i+1).getOperationSignature();
 				
-				int indexOfCurrentCall = listOfCalledMethods.indexOf(currentCall);
-				int indexOfSubsequentCall = listOfCalledMethods.indexOf(subsequentCall);
+				int indexOfCurrentCall = distinctOperationSignatures.indexOf(currentCall);
+				int indexOfSubsequentCall = distinctOperationSignatures.indexOf(subsequentCall);
 				
 				transitionMatrix.getAbsoluteTransitionMatrix() [indexOfCurrentCall] [indexOfSubsequentCall] = transitionMatrix.getAbsoluteTransitionMatrix() [indexOfCurrentCall] [indexOfSubsequentCall] + 1;
 				

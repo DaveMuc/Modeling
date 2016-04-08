@@ -42,6 +42,7 @@ public class KMeansClustering extends AbstractClustering {
 			clustersize = kmeans.getClusterSizes();
 			assignments = kmeans.getAssignments();
 			
+			
 			clusteredEntryCallSequenceModels = createForEveryClusterASequenceModel(numberOfClusters, assignments, sequenceModel);
 			
 //			Instances resultingCentroids = kmeans.getClusterCentroids();

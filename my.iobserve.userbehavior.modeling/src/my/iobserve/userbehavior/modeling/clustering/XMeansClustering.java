@@ -3,6 +3,8 @@ package my.iobserve.userbehavior.modeling.clustering;
 import java.util.List;
 
 import my.iobserve.userbehavior.modeling.data.EntryCallSequenceModel;
+import my.iobserve.userbehavior.modeling.data.UserSessionAsAbsoluteTransitionMatrix;
+import weka.clusterers.ClusterEvaluation;
 import weka.clusterers.XMeans;
 import weka.core.DistanceFunction;
 import weka.core.EuclideanDistance;
@@ -14,7 +16,12 @@ public class XMeansClustering extends AbstractClustering {
 		
 		try {
 			
-			Instances instances = createInstances(sequenceModel.getUserSessions());
+			List<String> calledMethods = createListOfDistinctCalledMethods(sequenceModel.getUserSessions());
+			List<UserSessionAsAbsoluteTransitionMatrix> absoluteTransitionModel = createAbsoluteTransitionUserSessions(sequenceModel.getUserSessions(), calledMethods);
+			
+			Instances instances = createInstances(absoluteTransitionModel, calledMethods);
+//			Instances instances = createInstances(sequenceModel.getUserSessions());
+			
 			
 			XMeans xmeans = new XMeans();
 			xmeans.setSeed(5);
@@ -41,6 +48,10 @@ public class XMeansClustering extends AbstractClustering {
 				assignments[s] = xmeans.clusterInstance(instances.instance(s));
 				clustersize[xmeans.clusterInstance(instances.instance(s))]++;
 			}
+			
+			ClusteringMetrics clusteringMetrics = new ClusteringMetrics(xmeans.getClusterCenters(), instances, assignments);
+			clusteringMetrics.calculateSimilarityMetrics();
+			clusteringMetrics.printSimilarityMetrics();
 
 			clusteredEntryCallSequenceModels = createForEveryClusterASequenceModel(clustersize.length, assignments, sequenceModel);
 			

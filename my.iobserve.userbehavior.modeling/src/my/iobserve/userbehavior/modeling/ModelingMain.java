@@ -25,8 +25,8 @@ public class ModelingMain {
 		final XMeansClustering xMeansClustering = new XMeansClustering();
 		
 		EntryCallSequenceModel sequenceModel = sequenceModelBuilder.createSequenceModel(modelingApplication.csvDirectoryPath);
-		List<EntryCallSequenceModel> clusteredEntryCallSequenceModels = kMeansClustering.clusterSessionsWithKMeans(sequenceModel);
-//		xMeansClustering.clusterSessionsWithXMeans(sequenceModel);
+//		List<EntryCallSequenceModel> clusteredEntryCallSequenceModels = kMeansClustering.clusterSessionsWithKMeans(sequenceModel);
+		List<EntryCallSequenceModel> clusteredEntryCallSequenceModels = xMeansClustering.clusterSessionsWithXMeans(sequenceModel);
 		
 //		loopDetection.detectLoopsInUserSessions(sequenceModel.getUserSessions());
 //		csvWriter.writeSequenceModelToCSV(callSequenceModel.getUserSessions());
