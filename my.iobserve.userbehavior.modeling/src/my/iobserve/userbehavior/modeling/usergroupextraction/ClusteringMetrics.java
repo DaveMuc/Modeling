@@ -1,4 +1,4 @@
-package my.iobserve.userbehavior.modeling.clustering;
+package my.iobserve.userbehavior.modeling.usergroupextraction;
 
 import weka.core.DistanceFunction;
 import weka.core.EuclideanDistance;

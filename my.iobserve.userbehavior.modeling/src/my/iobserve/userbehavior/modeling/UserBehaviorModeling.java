@@ -3,11 +3,11 @@ package my.iobserve.userbehavior.modeling;
 import java.io.IOException;
 import java.util.List;
 
-import my.iobserve.userbehavior.modeling.clustering.EmClustering;
-import my.iobserve.userbehavior.modeling.clustering.ExtractionOfUserGroups;
-import my.iobserve.userbehavior.modeling.clustering.KMeansClustering;
-import my.iobserve.userbehavior.modeling.clustering.XMeansClustering;
 import my.iobserve.userbehavior.modeling.data.EntryCallSequenceModel;
+import my.iobserve.userbehavior.modeling.usergroupextraction.EmClustering;
+import my.iobserve.userbehavior.modeling.usergroupextraction.UserGroupExtraction;
+import my.iobserve.userbehavior.modeling.usergroupextraction.KMeansClustering;
+import my.iobserve.userbehavior.modeling.usergroupextraction.XMeansClustering;
 import my.iobserve.userbehavior.modeling.utils.CSVWriter;
 import my.iobserve.userbehavior.modeling.utils.SequenceModelBuilder;
 
@@ -32,12 +32,12 @@ public class UserBehaviorModeling {
 		 * The result is one entry call sequence model for each detected user group
 		 * Each entry call sequence model contains the user sessions that are assigned to the user group
 		 */
-		final ExtractionOfUserGroups extractionOfUserGroups = new ExtractionOfUserGroups(entryCallSequenceModel);
+		final UserGroupExtraction extractionOfUserGroups = new UserGroupExtraction(entryCallSequenceModel);
 		extractionOfUserGroups.extractUserGroups();
 		final List<EntryCallSequenceModel> entryCallSequenceModels = extractionOfUserGroups.getEntryCallSequenceModelsOfUserGroups();
 		
 		/**
-		 * Chapter 4.3.4 The creation of the 
+		 * Chapter 4.3.4 The creation of the branch operation model
 		 */
 		
 		

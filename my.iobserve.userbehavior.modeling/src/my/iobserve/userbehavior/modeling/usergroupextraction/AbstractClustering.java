@@ -1,4 +1,4 @@
-package my.iobserve.userbehavior.modeling.clustering;
+package my.iobserve.userbehavior.modeling.usergroupextraction;
 
 
 import java.util.List;

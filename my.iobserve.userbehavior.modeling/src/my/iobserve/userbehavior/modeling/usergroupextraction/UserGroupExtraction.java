@@ -1,16 +1,16 @@
-package my.iobserve.userbehavior.modeling.clustering;
+package my.iobserve.userbehavior.modeling.usergroupextraction;
 
 import java.util.List;
 
 import my.iobserve.userbehavior.modeling.data.EntryCallSequenceModel;
 import my.iobserve.userbehavior.modeling.data.UserSessionAsAbsoluteTransitionMatrix;
 
-public class ExtractionOfUserGroups {
+public class UserGroupExtraction {
 	
 	private EntryCallSequenceModel entryCallSequenceModel;
 	List<EntryCallSequenceModel> entryCallSequenceModelsOfUserGroups = null;
 	
-	public ExtractionOfUserGroups(EntryCallSequenceModel entryCallSequenceModel) {
+	public UserGroupExtraction(EntryCallSequenceModel entryCallSequenceModel) {
 		this.entryCallSequenceModel = entryCallSequenceModel;
 	}
 	
