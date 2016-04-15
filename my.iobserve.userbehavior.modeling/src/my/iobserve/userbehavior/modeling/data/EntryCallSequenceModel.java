@@ -30,11 +30,30 @@ public class EntryCallSequenceModel {
 	private final List<UserSession> userSessions;
 	
 	/**
+	 * Added David Peter, 15.04.2016
+	 * Likelihood of each user group after the clustering
+	 */
+	private final double likelihoodOfUserGroup;
+	
+	/**
 	 * Simple constructor set the list
 	 * @param sessions
 	 */
 	public EntryCallSequenceModel(final List<UserSession> sessions) {
 		this.userSessions = sessions;
+		/**
+		 * Added David Peter, 15.04.2016
+		 */
+		this.likelihoodOfUserGroup = 0;
+	}
+	
+	/**
+	 * Added David Peter, 15.04.2016
+	 * Constructor to add likelihood
+	 */
+	public EntryCallSequenceModel(final List<UserSession> sessions, double likelihoodOfUserGroup) {
+		this.userSessions = sessions;
+		this.likelihoodOfUserGroup = likelihoodOfUserGroup;
 	}
 	
 	/**
@@ -44,4 +63,10 @@ public class EntryCallSequenceModel {
 	public List<UserSession> getUserSessions() {
 		return this.userSessions;
 	}
+
+	public double getLikelihoodOfUserGroup() {
+		return likelihoodOfUserGroup;
+	}
+	
+	
 }

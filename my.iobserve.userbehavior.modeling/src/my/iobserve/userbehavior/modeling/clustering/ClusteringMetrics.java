@@ -6,10 +6,10 @@ import weka.core.Instances;
 
 public class ClusteringMetrics {
 	
-	// Distance between the clusters
-	private double interClusterSimilarity = 0;
-	// Distance within the clusters
-	private double intraClusterSimilarity = 0;
+	// Mean distance between the clusters
+	private double meanInterClusterSimilarity = 0;
+	// Mean distance within the clusters
+	private double meanIntraClusterSimilarity = 0;
 	
 	private Instances centroids;
 	private Instances instances; 
@@ -22,30 +22,30 @@ public class ClusteringMetrics {
 	}
 	
 	public void calculateSimilarityMetrics () {
-		this.interClusterSimilarity = calculateInterClusterSimilarity();
-		this.intraClusterSimilarity = calculateIntraClusterSimilarity();
+		this.meanInterClusterSimilarity = calculateInterClusterSimilarity();
+		this.meanIntraClusterSimilarity = calculateIntraClusterSimilarity();
 	}
 	
-	// Calculate distance between the clusters
+	// Calculate mean distance between the clusters
 	private double calculateInterClusterSimilarity () {
 		
 		DistanceFunction euclideanDistance = new EuclideanDistance();
 		euclideanDistance.setInstances(centroids);
 
-		double k = (double) centroids.numInstances();
+		double numberOfCentroids = (double) centroids.numInstances();
 		double sumDistance = 0;
 
-		for (int i = 0; i < k; i++) {
-			for (int j = i + 1; j < k; j++) {
+		for (int i = 0; i < numberOfCentroids; i++) {
+			for (int j = i + 1; j < numberOfCentroids; j++) {
 				sumDistance += euclideanDistance.distance(
 						centroids.instance(i), centroids.instance(j));
 			}
 		}
 
-		return (1 / (k * (k - 1) / 2)) * sumDistance;
+		return (1 / (numberOfCentroids * (numberOfCentroids - 1) / 2)) * sumDistance;
 	}
 	
-	// Calculate distance within the clusters
+	// Calculate mean distance within the clusters
 	private double calculateIntraClusterSimilarity () {
 		
 		DistanceFunction euclideanDistance = new EuclideanDistance();
@@ -53,12 +53,12 @@ public class ClusteringMetrics {
 
 		double[] avgIntraClusterSimilarity = new double[centroids
 				.numInstances()];
-		double k = (double) centroids.numInstances();
+		double numberOfCentroids = (double) centroids.numInstances();
 		double sumDistance = 0;
 		double counter = 0;
 		double sumDistanceAllClusters = 0;
 
-		for (int i = 0; i < k; i++) {
+		for (int i = 0; i < numberOfCentroids; i++) {
 			for (int j = 0; j < instances.numInstances(); j++) {
 				if (assignments[j] == i) {
 					sumDistance += euclideanDistance.distance(
@@ -75,24 +75,25 @@ public class ClusteringMetrics {
 			sumDistanceAllClusters += clusterDistance;
 		}
 
-		return (1 / k) * sumDistanceAllClusters;	
+		return (1 / numberOfCentroids) * sumDistanceAllClusters;	
 	}
 	
+	// Prints the calculated metrics
 	public void printSimilarityMetrics() {
-		if (interClusterSimilarity == 0 && intraClusterSimilarity == 0) {
+		if (meanInterClusterSimilarity == 0 && meanIntraClusterSimilarity == 0) {
 			System.out.println("Metrics have not been calculated");
 		} else {
-			System.out.println("Mean distance beetween the clusters: " + interClusterSimilarity);
-			System.out.println("Mean distance within the clusters: " + intraClusterSimilarity);
+			System.out.println("Mean distance beetween the clusters: " + meanInterClusterSimilarity);
+			System.out.println("Mean distance within the clusters: " + meanIntraClusterSimilarity);
 		}
 	}
 
 	public double getInterClusterSimilarity() {
-		return interClusterSimilarity;
+		return meanInterClusterSimilarity;
 	}
 
 	public double getIntraClusterSimilarity() {
-		return intraClusterSimilarity;
+		return meanIntraClusterSimilarity;
 	}
 	
 

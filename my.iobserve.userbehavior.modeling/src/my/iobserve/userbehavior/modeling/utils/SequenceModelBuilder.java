@@ -1,4 +1,4 @@
-package my.iobserve.userbehavior.modeling.parser;
+package my.iobserve.userbehavior.modeling.utils;
 
 import java.io.BufferedReader;
 import java.io.File;
