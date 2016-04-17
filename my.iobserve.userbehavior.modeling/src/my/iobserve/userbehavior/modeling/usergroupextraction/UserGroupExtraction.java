@@ -8,7 +8,7 @@ import my.iobserve.userbehavior.modeling.data.UserSessionAsAbsoluteTransitionMat
 public class UserGroupExtraction {
 	
 	private EntryCallSequenceModel entryCallSequenceModel;
-	List<EntryCallSequenceModel> entryCallSequenceModelsOfUserGroups = null;
+	private List<EntryCallSequenceModel> entryCallSequenceModelsOfUserGroups = null;
 	
 	public UserGroupExtraction(EntryCallSequenceModel entryCallSequenceModel) {
 		this.entryCallSequenceModel = entryCallSequenceModel;
@@ -49,6 +49,14 @@ public class UserGroupExtraction {
 		List<EntryCallSequenceModel> entryCallSequenceModelsOfXMeansClustering = clusteringProcessing.getForEachUserGroupAEntryCallSequenceModel(xMeansClusteringResults, entryCallSequenceModel);
 		kMeansClusteringResults.printClusteringResults();
 		List<EntryCallSequenceModel> entryCallSequenceModelsOfKMeansClustering = clusteringProcessing.getForEachUserGroupAEntryCallSequenceModel(kMeansClusteringResults, entryCallSequenceModel);
+		
+		/**
+		 * Chapter 4.3.3.5 Obtaining the user groups´ workload intensity 
+		 * Calculates and sets for each user group its own workload intensity
+		 * The intensity consists of an interarrival time for an open workload definition
+		 * and the maximum number of concurrent users for a closed workload definition
+		 */
+		clusteringProcessing.setTheWorkloadIntensityForTheEntryCallSequenceModels(entryCallSequenceModelsOfXMeansClustering);
 		
 		this.entryCallSequenceModelsOfUserGroups = entryCallSequenceModelsOfXMeansClustering;
 	}

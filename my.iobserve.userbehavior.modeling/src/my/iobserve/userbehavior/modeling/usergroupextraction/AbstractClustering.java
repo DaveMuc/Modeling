@@ -64,4 +64,12 @@ public abstract class AbstractClustering {
 //		
 //		return isTrainingSet;
 //	}
+	
+	// Gets the number of user groups within the input usage model
+	protected int getNumberOfUserGroupsFromUsageModel() {
+		int numberOfUserGroups = 0;
+		// TODO
+		return numberOfUserGroups;
+	}
+	
 }

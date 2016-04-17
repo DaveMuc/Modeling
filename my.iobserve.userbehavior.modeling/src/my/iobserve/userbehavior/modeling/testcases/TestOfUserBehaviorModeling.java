@@ -20,6 +20,8 @@ public class TestOfUserBehaviorModeling {
 	static int numberOfUserSessions = 500;
 	static int minNumberOfCallEvents = 4;
 	static int maxNumberOfCallEvents = 10;
+	static int minEntryTime = 1000;
+	static int maxEntryTime = 9000;
 	
 	/**
 	 * Creates a entryCallSequenceModel that consists of a defined number of user sessions
@@ -37,8 +39,8 @@ public class TestOfUserBehaviorModeling {
 			int numberOfCallEvents = (int)(Math.random() * ((maxNumberOfCallEvents - minNumberOfCallEvents) + 1)) + minNumberOfCallEvents;
 			for(int j=0;j<numberOfCallEvents;j++) {
 				int index = j;
-				long entrytime = j;
-				long exitTime = j+1;
+				long entrytime = (long)(Math.random() * ((maxEntryTime - minEntryTime) + 1)) + minEntryTime;
+				long exitTime = entrytime + 1000;
 				String classSignature = "class";
 				String operationSignature = "";
 				if(j==0)

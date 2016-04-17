@@ -32,8 +32,11 @@ public class EntryCallSequenceModel {
 	/**
 	 * Added David Peter, 15.04.2016
 	 * Likelihood of each user group after the clustering
+	 * Interarrival time of the related user sessions, usable for an open workload
 	 */
 	private final double likelihoodOfUserGroup;
+	private WorkloadIntensity workloadIntensity;
+	
 	
 	/**
 	 * Simple constructor set the list
@@ -64,9 +67,24 @@ public class EntryCallSequenceModel {
 		return this.userSessions;
 	}
 
+	/**
+	 * Added David Peter
+	 */
 	public double getLikelihoodOfUserGroup() {
 		return likelihoodOfUserGroup;
 	}
+
+	public void setWorkloadIntensity(WorkloadIntensity workloadIntensity) {
+		this.workloadIntensity = workloadIntensity;
+	}
+
+	public WorkloadIntensity getWorkloadIntensity() {
+		return workloadIntensity;
+	}
+	
+	
+	
+	
 	
 	
 }
