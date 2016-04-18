@@ -52,9 +52,7 @@ public class UserGroupExtraction {
 		
 		/**
 		 * Chapter 4.3.3.5 Obtaining the user groups´ workload intensity 
-		 * Calculates and sets for each user group its own workload intensity
-		 * The intensity consists of an interarrival time for an open workload definition
-		 * and the maximum number of concurrent users for a closed workload definition
+		 * Calculates and sets for each user group its own workload intensity parameters
 		 */
 		clusteringProcessing.setTheWorkloadIntensityForTheEntryCallSequenceModels(entryCallSequenceModelsOfXMeansClustering);
 		

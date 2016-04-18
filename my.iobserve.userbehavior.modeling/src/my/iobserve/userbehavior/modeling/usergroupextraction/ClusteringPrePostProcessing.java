@@ -122,27 +122,35 @@ public class ClusteringPrePostProcessing {
 	
 		if(sessions.size() > 0) {
 			
-			Collections.sort(sessions, this.SortUserSessionByEntryTime);
-			List<Long> listOfExitTimes = new ArrayList<Long>();
 			int countOfConcurrentUsers = 0;
+			Collections.sort(sessions, this.SortUserSessionByEntryTime);
 			
-			for (int i = 0; i < sessions.size() - 1; i++) {
+			for (int i = 0; i < sessions.size(); i++) {
 				
-				final long startTime =  sessions.get(i).getEntryTime();
-				final long exitTime = sessions.get(i).getExitTime();
+				final long entryTimeUS1 =  sessions.get(i).getEntryTime();
+				final long exitTimeUS1 = sessions.get(i).getExitTime();
 				int numberOfConcurrentUserSessionsDuringThisSession = 1;
 				
-				for(int j=0;j<listOfExitTimes.size();j++) {
-					if(startTime<listOfExitTimes.get(j)) {
+				for (int j = 0; j < sessions.size(); j++) {
+					if(j==i)
+						continue;
+					
+					final long entryTimeUS2 =  sessions.get(j).getEntryTime();
+					final long exitTimeUS2 = sessions.get(j).getExitTime();
+					
+					if(exitTimeUS2<entryTimeUS1)
+						continue;
+					if(entryTimeUS2>exitTimeUS1)
+						break;
+					if((exitTimeUS1>entryTimeUS2&&exitTimeUS1<exitTimeUS2)||(exitTimeUS2>entryTimeUS1&&exitTimeUS2<exitTimeUS1))
 						numberOfConcurrentUserSessionsDuringThisSession++;
-					}
+					
 				}
-				
+								
 				if(numberOfConcurrentUserSessionsDuringThisSession > maxNumberOfConcurrentUsers)
 					maxNumberOfConcurrentUsers = numberOfConcurrentUserSessionsDuringThisSession;
 				
 				countOfConcurrentUsers += numberOfConcurrentUserSessionsDuringThisSession;
-				listOfExitTimes.add(exitTime);
 			}
 			
 
@@ -152,6 +160,7 @@ public class ClusteringPrePostProcessing {
 		workloadIntensity.setMaxNumberOfConcurrentUsers(maxNumberOfConcurrentUsers);
 		workloadIntensity.setAvgNumberOfConcurrentUsers(averageNumberOfConcurrentUsers);
 	}
+	
 	
 	/**
 	 * David Peter
@@ -207,15 +216,64 @@ public class ClusteringPrePostProcessing {
 		}
 	};
 	
+	/**
+	 * David Peter
+	 * Used from package org.iobserve.analysis.filter.TEntryEventSequence;
+	 */
+	/**
+	/**
+	 * Sorts {@link UserSession} by the exit time
+	 */
 	private final Comparator<UserSession> SortUserSessionByEntryTime = new Comparator<UserSession>() {
 		
 		@Override
 		public int compare(final UserSession o1, final UserSession o2) {
-			long entryO1 = o1.getEntryTime();
-			long entryO2 = o2.getEntryTime();
+			long entryO1 = getEntryTime(o1.getEvents());
+			long entryO2 = getEntryTime(o2.getEvents());
 			if(entryO1 > entryO2) {
 				return 1;
 			} else if(entryO1 < entryO2) {
+				return -1;
+			}
+			return 0;
+		}
+	};
+	
+	
+	/**
+	 * From UserSession
+	 * After the error is removed from UserSession this can be deleted
+	 */
+	
+	/**
+	 * Get the entry time of this entire session.
+	 * @return 0 if no events available at all and > 0 else.
+	 */
+	public long getEntryTime(List<EntryCallEvent> events) {
+		long entryTime = 0;
+		if (events.size() > 0) {
+			this.sortEventsBy(SortEntryCallEventsByEntryTime, events);
+			// Here was the error: First element has to be returned instead of last
+			entryTime = events.get(0).getEntryTime();
+		}
+		return entryTime;
+	}
+	
+	public void sortEventsBy(final Comparator<EntryCallEvent> cmp, List<EntryCallEvent> events) {
+		Collections.sort(events,cmp);
+	}
+	
+	/**
+	 * Simple comparator for comparing the entry times
+	 */
+	public static final Comparator<EntryCallEvent> SortEntryCallEventsByEntryTime = 
+			new Comparator<EntryCallEvent>() {
+		
+		@Override
+		public int compare(final EntryCallEvent o1, final EntryCallEvent o2) {
+			if (o1.getEntryTime() > o2.getEntryTime()) {
+				return 1;
+			} else if (o1.getEntryTime() < o2.getEntryTime()) {
 				return -1;
 			}
 			return 0;
