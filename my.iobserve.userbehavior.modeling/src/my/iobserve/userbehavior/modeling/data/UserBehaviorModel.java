@@ -3,6 +3,7 @@ package my.iobserve.userbehavior.modeling.data;
 import java.util.List;
 
 import my.iobserve.userbehavior.modeling.branchextraction.Branch;
+import my.iobserve.userbehavior.modeling.branchextraction.BranchOperationModel;
 
 public class UserBehaviorModel {
 	
@@ -13,7 +14,7 @@ public class UserBehaviorModel {
 	private List<EntryCallSequenceModel> entryCallSequenceModels;
 
 	// result of the branch extraction
-	private List<Branch> branchOperationModels;
+	private List<BranchOperationModel> branchOperationModels;
 	
 	
 	public EntryCallSequenceModel getEntryCallSequenceModel() {
@@ -32,11 +33,11 @@ public class UserBehaviorModel {
 		this.entryCallSequenceModels = entryCallSequenceModels;
 	}
 
-	public List<Branch> getBranchOperationModels() {
+	public List<BranchOperationModel> getBranchOperationModels() {
 		return branchOperationModels;
 	}
 
-	public void setBranchOperationModels(List<Branch> branchOperationModels) {
+	public void setBranchOperationModels(List<BranchOperationModel> branchOperationModels) {
 		this.branchOperationModels = branchOperationModels;
 	}
 

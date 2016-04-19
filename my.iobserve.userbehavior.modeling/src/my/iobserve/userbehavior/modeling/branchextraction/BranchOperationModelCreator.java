@@ -1,6 +1,8 @@
 package my.iobserve.userbehavior.modeling.branchextraction;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -10,52 +12,194 @@ import my.iobserve.userbehavior.modeling.data.UserSession;
 
 public class BranchOperationModelCreator {
 	
-	public Branch createBranchOperationModel(EntryCallSequenceModel entryCallSequenceModel) {
+//	public BranchOperationModel createBranchOperationModel(EntryCallSequenceModel entryCallSequenceModel) {
+//		
+//		BranchOperationModel branchOperationModel = new BranchOperationModel(entryCallSequenceModel.getWorkloadIntensity());
+//		int numberOfUserSessions = entryCallSequenceModel.getUserSessions().size();
+//		
+//		// The initial branch that contains the root node
+//		// The likelihood of the root branch is always 1 
+//		Branch rootBranch = new Branch();
+//		rootBranch.setBranchLikelihood(1);
+//		
+//		int indexOfCallEvent = 0;
+//		boolean addedNewCall = false;
+//		List<String> listOfOperationSignatures = new ArrayList<String>();
+//		List<List<UserSession>> listOfListOfUserSessions = new ArrayList<List<UserSession>>();
+//		
+//		do {
+//		
+//			addedNewCall = false;
+//			listOfOperationSignatures.clear();
+//			listOfListOfUserSessions.clear();
+//			
+//			for(final UserSession userSession : entryCallSequenceModel.getUserSessions()) {
+//				
+//				if(indexOfCallEvent>=userSession.getEvents().size()) 
+//					continue;
+//				
+//				addedNewCall = true;
+//				String operationSignature = userSession.getEvents().get(indexOfCallEvent).getOperationSignature();
+//
+//				if(!listOfOperationSignatures.contains(operationSignature)) {
+//					listOfOperationSignatures.add(operationSignature);
+//					List<UserSession> listOfUserSessions = new ArrayList<UserSession>();
+//					listOfUserSessions.add(userSession);
+//					listOfListOfUserSessions.add(listOfUserSessions);
+//				} else {
+//					int index = listOfOperationSignatures.indexOf(operationSignature);
+//					List<UserSession> listOfUserSessions = listOfListOfUserSessions.get(index);
+//					listOfUserSessions.add(userSession);
+//					listOfListOfUserSessions.add(index, listOfUserSessions);
+//				}
+//			}
+//			
+//			indexOfCallEvent++;
+//		
+//		} while(addedNewCall);
+//		
+//		return branchOperationModel;
+//	}
+	
+	public BranchOperationModel createBranchOperationModel(EntryCallSequenceModel entryCallSequenceModel) {
 		
-		int numberOfUserSessions = entryCallSequenceModel.getUserSessions().size();
+		BranchOperationModel branchOperationModel = new BranchOperationModel(entryCallSequenceModel.getWorkloadIntensity());
+		List<UserSession> userSessions = entryCallSequenceModel.getUserSessions();
+		int numberOfUserSessions = userSessions.size();
 		
 		// The initial branch that contains the root node
 		// The likelihood of the root branch is always 1 
-		Branch branchOperationModel = new Branch();
-		branchOperationModel.setBranchLikelihood(1);
+		Branch rootBranch = new Branch();
+		rootBranch.setBranchLikelihood(1);
 		
-		int indexOfCallEvent = 0;
-		boolean addedNewCall = false;
-		List<String> listOfOperationSignatures = new ArrayList<String>();
-		List<List<UserSession>> listOfListOfUserSessions = new ArrayList<List<UserSession>>();
+		// Descending sort by call sequence length
+		Collections.sort(userSessions, this.SortUserSessionByCallSequenceSize); 
 		
-		do {
+		initializeRootBranchWithFirstUserSession(rootBranch, userSessions.get(0));
 		
-			addedNewCall = false;
-			listOfOperationSignatures.clear();
-			listOfListOfUserSessions.clear();
+		// loops over all userSession without the first user session that initialized the rootBranch
+		for(int j=1;j<userSessions.size();j++) {
 			
-			for(final UserSession userSession : entryCallSequenceModel.getUserSessions()) {
+			UserSession userSession = userSessions.get(j);
+			
+			List<Integer> branchGuide = new ArrayList<Integer>();
+			int positionInBranch = 0;
+			
+			for(int i=0;i<userSession.getEvents().size();i++) {
 				
-				if(indexOfCallEvent>=userSession.getEvents().size()) 
+				Branch examinedBranch = getExaminedBranch(branchGuide, rootBranch);
+				EntryCallEvent callEvent = userSession.getEvents().get(i);
+				
+				// Checks if there is a match between the call event and the element in the currently examined branch
+				if(checkPositionMatchInBranch(callEvent, examinedBranch, positionInBranch)) {
+					incrementCountOfCallElement(examinedBranch, positionInBranch);
+					positionInBranch++;
 					continue;
+				}	
 				
-				addedNewCall = true;
-				String operationSignature = userSession.getEvents().get(indexOfCallEvent).getOperationSignature();
-
-				if(!listOfOperationSignatures.contains(operationSignature)) {
-					listOfOperationSignatures.add(operationSignature);
-					List<UserSession> listOfUserSessions = new ArrayList<UserSession>();
-					listOfUserSessions.add(userSession);
-					listOfListOfUserSessions.add(listOfUserSessions);
-				} else {
-					int index = listOfOperationSignatures.indexOf(operationSignature);
-					List<UserSession> listOfUserSessions = listOfListOfUserSessions.get(index);
-					listOfUserSessions.add(userSession);
-					listOfListOfUserSessions.add(index, listOfUserSessions);
+				// Checks if there is a match between the call event and a first element of a child branch 
+				if(isPositionLastElementInBranchSequence(examinedBranch, positionInBranch)) {
+					int indexOfMatchingChildBranch = getIndexOfMatchingChildBranch(callEvent, examinedBranch);
+					if(indexOfMatchingChildBranch>-1) {
+						branchGuide.add(indexOfMatchingChildBranch);
+						// Iterate the loop with the same call event but switching to the new branch
+						i--;
+						positionInBranch = 0;
+						continue;
+					}
 				}
+				
+				// No match could be found --> Split branch into child branches
+				
+
+				
+				
+				
 			}
 			
-			indexOfCallEvent++;
-		
-		} while(addedNewCall);
+		}
 		
 		return branchOperationModel;
 	}
+	
+
+
+	private void initializeRootBranchWithFirstUserSession(Branch rootBranch, UserSession userSession) {
+		List<BranchElement> initialRootBranchSequence = new ArrayList<BranchElement>();
+		for(EntryCallEvent callEvent : userSession.getEvents()) {
+			CallElement callElement = new CallElement(callEvent.getClassSignature(), callEvent.getOperationSignature());
+			callElement.setAbsoluteCount(1);
+			BranchElement branchElement = new BranchElement(callElement);
+			initialRootBranchSequence.add(branchElement);
+		}
+		rootBranch.setBranchSequence(initialRootBranchSequence);
+	}
+
+	private Branch getExaminedBranch(List<Integer> branchGuide, Branch rootBranch) {
+		Branch examinedBranch = rootBranch;
+		for(int i=0;i<branchGuide.size();i++) {
+			examinedBranch = examinedBranch.getChildBranches().get(branchGuide.get(i));
+		}
+		return examinedBranch;
+	}
+
+	private boolean isCallEventCallElementMatch(EntryCallEvent callEvent, CallElement callElement) {
+		if(callEvent.getOperationSignature().equals(callElement.getOperationSignature())&&callEvent.getClassSignature().equals(callElement.getClassSignature()))
+			return true;
+		else
+			return false;
+	}
+	
+	private boolean checkPositionMatchInBranch(EntryCallEvent callEvent, Branch examinedBranch, int position) {
+		if(position>=examinedBranch.getBranchSequence().size())
+			return false;
+		CallElement callElement = examinedBranch.getBranchSequence().get(position).getCallElement();
+		if(isCallEventCallElementMatch(callEvent, callElement))
+			return true;
+		return false;
+	}
+	
+	private boolean isPositionLastElementInBranchSequence(Branch examinedBranch, int positionInBranch) {
+		if(examinedBranch.getBranchSequence().size()-1==positionInBranch)
+			return true;
+		else
+			return false;
+	}
+	
+	private int getIndexOfMatchingChildBranch(EntryCallEvent callEvent, Branch examinedBranch) {
+		if(examinedBranch.getChildBranches().size()==0){
+			return -1;
+		}
+		for(int i=0;i<examinedBranch.getChildBranches().size();i++) {
+			CallElement callElement = examinedBranch.getChildBranches().get(i).getBranchSequence().get(0).getCallElement();
+			if(isCallEventCallElementMatch(callEvent, callElement))
+				return i;
+		}
+		return -1;
+	}
+	
+	
+	private void incrementCountOfCallElement(Branch examinedBranch, int position) {
+		int absoluteCount = examinedBranch.getBranchSequence().get(position).getCallElement().getAbsoluteCount() + 1;
+		examinedBranch.getBranchSequence().get(position).getCallElement().setAbsoluteCount(absoluteCount);
+	}
+	
+	
+	// Descending Sort user sessions by call sequence length
+	// User session with longest call sequence will be first element
+	private final Comparator<UserSession> SortUserSessionByCallSequenceSize = new Comparator<UserSession>() {
+		
+		@Override
+		public int compare(final UserSession o1, final UserSession o2) {
+			int sizeO1 = o1.getEvents().size();
+			int sizeO2 = o2.getEvents().size();
+			if(sizeO1 < sizeO2) {
+				return 1;
+			} else if(sizeO1 > sizeO2) {
+				return -1;
+			}
+			return 0;
+		}
+	};
 
 }

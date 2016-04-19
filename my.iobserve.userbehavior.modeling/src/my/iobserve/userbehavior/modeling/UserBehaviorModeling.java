@@ -5,6 +5,7 @@ import java.util.List;
 
 import my.iobserve.userbehavior.modeling.branchextraction.Branch;
 import my.iobserve.userbehavior.modeling.branchextraction.BranchExtraction;
+import my.iobserve.userbehavior.modeling.branchextraction.BranchOperationModel;
 import my.iobserve.userbehavior.modeling.data.EntryCallSequenceModel;
 import my.iobserve.userbehavior.modeling.data.UserBehaviorModel;
 import my.iobserve.userbehavior.modeling.usergroupextraction.UserGroupExtraction;
@@ -42,10 +43,10 @@ public class UserBehaviorModeling {
 		/**
 		 * Chapter 4.3.4 The creation of the branch operation model
 		 */
-//		final BranchExtraction branchExtraction = new BranchExtraction(userBehaviorModel.getEntryCallSequenceModels());
-//		branchExtraction.createBranchOperationModel();
-//		final List<Branch> branchOperationModels = branchExtraction.getBranchOperationModels();
-//		userBehaviorModel.setBranchOperationModels(branchOperationModels);
+		final BranchExtraction branchExtraction = new BranchExtraction(userBehaviorModel.getEntryCallSequenceModels());
+		branchExtraction.createBranchOperationModel();
+		final List<BranchOperationModel> branchOperationModels = branchExtraction.getBranchOperationModels();
+		userBehaviorModel.setBranchOperationModels(branchOperationModels);
 		
 		// to set a breakpoint
 		// To delete

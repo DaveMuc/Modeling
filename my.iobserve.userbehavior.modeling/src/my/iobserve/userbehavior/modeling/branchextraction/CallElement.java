@@ -2,8 +2,9 @@ package my.iobserve.userbehavior.modeling.branchextraction;
 
 public class CallElement {
 	
-	private String classSignature;
-	private String operationSignature;
+	private final String classSignature;
+	private final String operationSignature;
+	private int absoluteCount;
 	
 	public CallElement(String classSignature, String operationSignature) {
 		this.classSignature = classSignature;
@@ -17,6 +18,16 @@ public class CallElement {
 	public String getOperationSignature() {
 		return operationSignature;
 	}
+
+	public int getAbsoluteCount() {
+		return absoluteCount;
+	}
+
+	public void setAbsoluteCount(int absoluteCount) {
+		this.absoluteCount = absoluteCount;
+	}
+	
+	
 
 	
 }

@@ -1,5 +1,6 @@
 package my.iobserve.userbehavior.modeling.branchextraction;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Branch {
@@ -10,9 +11,14 @@ public class Branch {
 	private int loopCount = 1;
 	
 	public Branch() {
-		
+		branchSequence = new ArrayList<BranchElement>();
+		childBranches = new ArrayList<Branch>();
 	}
-
+	
+	public void addBranch(Branch childBranch) {
+		childBranches.add(childBranch);
+	}
+	
 	public List<BranchElement> getBranchSequence() {
 		return branchSequence;
 	}
