@@ -5,6 +5,6 @@ import java.util.List;
 public class LoopElement {
 	
 	private List<CallElement> callSequence;
-	private int loopCount;
+	private int loopIteration;
 
 }
