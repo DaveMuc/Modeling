@@ -21,9 +21,10 @@ public class BranchExtraction {
 		
 		for(final EntryCallSequenceModel entryCallSequenceModel:entryCallSequenceModels) {
 			BranchOperationModel branchOperationModel = modelCreator.createBranchOperationModel(entryCallSequenceModel);
+			modelCreator.calculateLikelihoodsOfBranches(branchOperationModel);
 			branchOperationModels.add(branchOperationModel);
 		}
-		
+
 	}
 
 	public List<BranchOperationModel> getBranchOperationModels() {

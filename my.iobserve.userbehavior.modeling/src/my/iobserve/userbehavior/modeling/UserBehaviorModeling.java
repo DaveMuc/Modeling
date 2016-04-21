@@ -1,5 +1,9 @@
 package my.iobserve.userbehavior.modeling;
 
+/**
+ * Copyright 2016 David Peter
+ */
+
 import java.io.IOException;
 import java.util.List;
 

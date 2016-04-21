@@ -6,9 +6,11 @@ public class BranchOperationModel {
 	
 	private Branch rootBranch;
 	private final WorkloadIntensity workloadIntensity;
+	private final double likelihoodOfUserGroup;
 	
-	public BranchOperationModel(WorkloadIntensity workloadIntensity) {
+	public BranchOperationModel(WorkloadIntensity workloadIntensity, double likelihoodOfUserGroup) {
 		this.workloadIntensity = workloadIntensity;
+		this.likelihoodOfUserGroup = likelihoodOfUserGroup;
 	}
 
 	public Branch getRootBranch() {
@@ -22,7 +24,10 @@ public class BranchOperationModel {
 	public WorkloadIntensity getWorkloadIntensity() {
 		return workloadIntensity;
 	}
-	
-	
+
+	public double getLikelihoodOfUserGroup() {
+		return likelihoodOfUserGroup;
+	}
+		
 
 }

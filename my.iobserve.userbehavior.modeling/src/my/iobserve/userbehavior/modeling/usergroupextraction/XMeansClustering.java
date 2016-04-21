@@ -28,7 +28,7 @@ public class XMeansClustering extends AbstractClustering {
 			int[] assignments = new int[instances.numInstances()];
 			
 			int numberOfClustersMin = 2;
-			int numberOfClustersMax = 4;
+			int numberOfClustersMax = 2;
 			
 			xmeans.setMinNumClusters(numberOfClustersMin);
 			xmeans.setMaxNumClusters(numberOfClustersMax);

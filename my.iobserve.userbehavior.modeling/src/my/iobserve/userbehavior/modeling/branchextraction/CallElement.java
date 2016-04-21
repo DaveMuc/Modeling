@@ -1,6 +1,6 @@
 package my.iobserve.userbehavior.modeling.branchextraction;
 
-public class CallElement {
+public class CallElement implements BranchElement {
 	
 	private final String classSignature;
 	private final String operationSignature;

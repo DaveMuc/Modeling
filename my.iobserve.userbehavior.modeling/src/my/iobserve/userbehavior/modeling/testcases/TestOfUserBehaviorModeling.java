@@ -41,8 +41,10 @@ public class TestOfUserBehaviorModeling {
 //			int numberOfCallEvents = (int)(Math.random() * ((maxNumberOfCallEvents - minNumberOfCallEvents) + 1)) + minNumberOfCallEvents;
 //			for(int j=0;j<numberOfCallEvents;j++) {
 //				int index = j;
-//				long entrytime = (long)(Math.random() * ((maxEntryTime - minEntryTime) + 1)) + minEntryTime;
-//				long exitTime = entrytime + 1000;
+////				long entrytime = (long)(Math.random() * ((maxEntryTime - minEntryTime) + 1)) + minEntryTime;
+////				long exitTime = entrytime + 1000;
+//				long entrytime = j;
+//				long exitTime = j+2;
 //				String classSignature = "class";
 //				String operationSignature = "";
 //				if(j==0)
@@ -61,7 +63,10 @@ public class TestOfUserBehaviorModeling {
 //		entryCallSequenceModel = new EntryCallSequenceModel(userSessions);
 //	}
 	
-	// Creates a entry call sequence model from user sessions that are locally stored as csv files 
+	/**
+	 *  Creates a entry call sequence model from user sessions that are locally stored as csv files 
+	 * @throws IOException
+	 */
 	@BeforeClass
 	public static void createCallSequenceModel() throws IOException {
 

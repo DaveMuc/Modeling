@@ -13,8 +13,9 @@ public class Branch {
 	public Branch() {
 		branchSequence = new ArrayList<BranchElement>();
 		childBranches = new ArrayList<Branch>();
+		branchLikelihood = 0;
 	}
-	
+		
 	public void addBranch(Branch childBranch) {
 		childBranches.add(childBranch);
 	}
