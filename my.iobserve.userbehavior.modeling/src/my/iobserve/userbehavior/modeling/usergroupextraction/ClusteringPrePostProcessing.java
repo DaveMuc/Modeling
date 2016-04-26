@@ -6,11 +6,11 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-import my.iobserve.userbehavior.modeling.data.EntryCallEvent;
-import my.iobserve.userbehavior.modeling.data.EntryCallSequenceModel;
-import my.iobserve.userbehavior.modeling.data.UserSession;
-import my.iobserve.userbehavior.modeling.data.UserSessionAsAbsoluteTransitionMatrix;
-import my.iobserve.userbehavior.modeling.data.WorkloadIntensity;
+import my.iobserve.userbehavior.modeling.iobservedata.EntryCallEvent;
+import my.iobserve.userbehavior.modeling.iobservedata.EntryCallSequenceModel;
+import my.iobserve.userbehavior.modeling.iobservedata.UserSession;
+import my.iobserve.userbehavior.modeling.modelingdata.UserSessionAsAbsoluteTransitionMatrix;
+import my.iobserve.userbehavior.modeling.modelingdata.WorkloadIntensity;
 
 public class ClusteringPrePostProcessing {
 	

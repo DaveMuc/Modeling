@@ -5,19 +5,27 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import my.iobserve.userbehavior.modeling.data.EntryCallEvent;
-import my.iobserve.userbehavior.modeling.data.EntryCallSequenceModel;
-import my.iobserve.userbehavior.modeling.data.UserSession;
+import my.iobserve.userbehavior.modeling.iobservedata.EntryCallEvent;
+import my.iobserve.userbehavior.modeling.iobservedata.EntryCallSequenceModel;
+import my.iobserve.userbehavior.modeling.iobservedata.UserSession;
+import my.iobserve.userbehavior.modeling.modelingdata.Branch;
+import my.iobserve.userbehavior.modeling.modelingdata.BranchElement;
+import my.iobserve.userbehavior.modeling.modelingdata.CallBranchModel;
+import my.iobserve.userbehavior.modeling.modelingdata.CallElement;
+import my.iobserve.userbehavior.modeling.modelingdata.ExitElement;
 
-public class BranchOperationModelCreator {
+public class CallBranchModelCreator {
 	
-	public void calculateLikelihoodsOfBranches(BranchOperationModel branchOperationModel) {
+	public void calculateLikelihoodsOfBranches(CallBranchModel callBranchModel) {
+		
+		// The likelihood of the root branch is always 1
+		callBranchModel.getRootBranch().setBranchLikelihood(1);
 		
 		List<Integer> branchGuide = new ArrayList<Integer>();
 		
 		do{
 			while(true) {
-				Branch examinedBranch = getExaminedBranch(branchGuide, branchOperationModel.getRootBranch());
+				Branch examinedBranch = getExaminedBranch(branchGuide, callBranchModel.getRootBranch());
 				int startBranchGuideSize = branchGuide.size();
 				if(examinedBranch.getChildBranches().size()==0) {
 					break;
@@ -33,8 +41,10 @@ public class BranchOperationModelCreator {
 				if(endBranchGuideSize==startBranchGuideSize)
 					break;
 			}
-			branchGuide.remove(branchGuide.size()-1);
-			setChildBranchLikelihoods(getExaminedBranch(branchGuide, branchOperationModel.getRootBranch()));
+			if(branchGuide.size()>0) {
+				branchGuide.remove(branchGuide.size()-1);
+				setChildBranchLikelihoods(getExaminedBranch(branchGuide, callBranchModel.getRootBranch()));
+			}
 		}while(branchGuide.size()>0);
 			
 	}
@@ -54,21 +64,23 @@ public class BranchOperationModelCreator {
 		}
 	}
 		
-	public BranchOperationModel createBranchOperationModel(EntryCallSequenceModel entryCallSequenceModel) {
+	public CallBranchModel createCallBranchModel(EntryCallSequenceModel entryCallSequenceModel) {
 		
-		BranchOperationModel branchOperationModel = new BranchOperationModel(entryCallSequenceModel.getWorkloadIntensity(), entryCallSequenceModel.getLikelihoodOfUserGroup());
+		CallBranchModel callBranchModel = new CallBranchModel(entryCallSequenceModel.getWorkloadIntensity(), entryCallSequenceModel.getLikelihoodOfUserGroup());
 		List<UserSession> userSessions = entryCallSequenceModel.getUserSessions();
 		
-		// The initial branch that contains the root node
-		// The likelihood of the root branch is always 1 
+		// The initial branch that contains the root node 
 		Branch rootBranch = new Branch();
 		rootBranch.setBranchLikelihood(1);
+		rootBranch.setBranchId(1);
 		
 		// Descending sort by call sequence length
 		Collections.sort(userSessions, this.SortUserSessionByCallSequenceSize); 
 		
 		// Initialzes the root sequence with the longest call sequence
 		setBranchSequence(rootBranch, userSessions.get(0).getEvents(), 0);
+		
+		int numberOfBranches = 1;
 		
 		// loops over all userSession without the first user session that initialized the rootBranch
 		for(int j=1;j<userSessions.size();j++) {
@@ -110,9 +122,11 @@ public class BranchOperationModelCreator {
 					// If there is already a split at that position add a new branch
 					// Else split the branch into two branches
 					if(isPositionLastElementInBranchSequence(examinedBranch, positionInBranch)) {
-						addNewBranch(examinedBranch);
+						addNewBranch(examinedBranch, numberOfBranches);
+						numberOfBranches++;
 					} else {
-						splitBranch(examinedBranch, positionInBranch);
+						splitBranch(examinedBranch, positionInBranch, numberOfBranches);
+						numberOfBranches = numberOfBranches + 2;
 					}
 					//Add branch sequence to the new branch
 					int indexOfNewAddedBranch = examinedBranch.getChildBranches().size()-1;
@@ -145,9 +159,11 @@ public class BranchOperationModelCreator {
 					// If there is already a split at that position add a new branch
 					// Else split the branch into two branches
 					if(isPositionLastElementInBranchSequence(examinedBranch, positionInBranch)) {
-						addNewBranch(examinedBranch);
+						addNewBranch(examinedBranch, numberOfBranches);
+						numberOfBranches++;
 					} else {
-						splitBranch(examinedBranch, positionInBranch);
+						splitBranch(examinedBranch, positionInBranch, numberOfBranches);
+						numberOfBranches = numberOfBranches + 2;
 					}
 					//Add exit element to the new exit branch
 					int indexOfNewAddedBranch = examinedBranch.getChildBranches().size()-1;
@@ -161,9 +177,10 @@ public class BranchOperationModelCreator {
 			
 		}
 		
-		branchOperationModel.setRootBranch(rootBranch);
+		callBranchModel.setRootBranch(rootBranch);
+		callBranchModel.setNumberOfBranches(numberOfBranches);
 		
-		return branchOperationModel;
+		return callBranchModel;
 	}
 	
 
@@ -209,14 +226,17 @@ public class BranchOperationModelCreator {
 		examinedBranch.getBranchSequence().add(exitElement);
 	}
 
-	private void addNewBranch(Branch examinedBranch) {
+	private void addNewBranch(Branch examinedBranch, int numberOfBranches) {
 		Branch childBranch = new Branch();
+		numberOfBranches++;
+		childBranch.setBranchId(numberOfBranches);
 		examinedBranch.addBranch(childBranch);
 	}
 
-	private void splitBranch(Branch examinedBranch, int positionInBranch) {
+	private void splitBranch(Branch examinedBranch, int positionInBranch, int numberOfBranches) {
 		Branch childBranch1 = new Branch();
 		Branch childBranch2 = new Branch();
+
 		List<BranchElement> branchSequence = new ArrayList<BranchElement>(examinedBranch.getBranchSequence().subList(0, positionInBranch));
 		List<BranchElement> branchSequence1 = new ArrayList<BranchElement>(examinedBranch.getBranchSequence().subList(positionInBranch, examinedBranch.getBranchSequence().size()));
 		List<BranchElement> branchSequence2 = new ArrayList<BranchElement>();
@@ -224,6 +244,11 @@ public class BranchOperationModelCreator {
 		examinedBranch.setBranchSequence(branchSequence);
 		childBranch1.setBranchSequence(branchSequence1);
 		childBranch2.setBranchSequence(branchSequence2);
+		
+		numberOfBranches++;
+		childBranch1.setBranchId(numberOfBranches);
+		numberOfBranches++;
+		childBranch2.setBranchId(numberOfBranches);
 		
 		for(Branch childBranch : examinedBranch.getChildBranches()) {
 			childBranch1.addBranch(childBranch);
@@ -312,9 +337,6 @@ public class BranchOperationModelCreator {
 	}
 	
 
-	
-	
-	
 	
 	// Descending Sort user sessions by call sequence length
 	// User session with longest call sequence will be first element

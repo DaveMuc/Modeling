@@ -1,4 +1,4 @@
-package my.iobserve.userbehavior.modeling.data;
+package my.iobserve.userbehavior.modeling.modelingdata;
 
 public class UserSessionAsAbsoluteTransitionMatrix {
 	

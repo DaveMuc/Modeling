@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
-import my.iobserve.userbehavior.modeling.data.EntryCallEvent;
-import my.iobserve.userbehavior.modeling.data.UserSession;
+import my.iobserve.userbehavior.modeling.iobservedata.EntryCallEvent;
+import my.iobserve.userbehavior.modeling.iobservedata.UserSession;
 
 public class CSVWriter {
 	

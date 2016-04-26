@@ -14,7 +14,7 @@
  * limitations under the License.
  ***************************************************************************/
 
-package my.iobserve.userbehavior.modeling.data;
+package my.iobserve.userbehavior.modeling.iobservedata;
 
 
 /**

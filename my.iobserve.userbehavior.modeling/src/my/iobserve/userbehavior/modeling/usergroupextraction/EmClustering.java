@@ -2,7 +2,7 @@ package my.iobserve.userbehavior.modeling.usergroupextraction;
 
 import java.util.List;
 
-import my.iobserve.userbehavior.modeling.data.UserSessionAsAbsoluteTransitionMatrix;
+import my.iobserve.userbehavior.modeling.modelingdata.UserSessionAsAbsoluteTransitionMatrix;
 import weka.clusterers.EM;
 import weka.core.Instances;
 

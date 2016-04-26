@@ -1,4 +1,4 @@
-package my.iobserve.userbehavior.modeling.branchextraction;
+package my.iobserve.userbehavior.modeling.modelingdata;
 
 public interface BranchElement {
 	

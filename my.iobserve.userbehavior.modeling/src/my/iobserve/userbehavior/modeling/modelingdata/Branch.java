@@ -1,10 +1,11 @@
-package my.iobserve.userbehavior.modeling.branchextraction;
+package my.iobserve.userbehavior.modeling.modelingdata;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Branch {
 	
+	private int branchId;
 	private List<BranchElement> branchSequence;
 	private double branchLikelihood;
 	private List<Branch> childBranches;
@@ -50,6 +51,14 @@ public class Branch {
 
 	public void setLoopCount(int loopCount) {
 		this.loopCount = loopCount;
+	}
+
+	public int getBranchId() {
+		return branchId;
+	}
+
+	public void setBranchId(int branchId) {
+		this.branchId = branchId;
 	}
 	
 	

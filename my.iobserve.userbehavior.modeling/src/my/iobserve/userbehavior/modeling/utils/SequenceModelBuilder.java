@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import my.iobserve.userbehavior.modeling.data.EntryCallEvent;
-import my.iobserve.userbehavior.modeling.data.EntryCallSequenceModel;
-import my.iobserve.userbehavior.modeling.data.UserSession;
+import my.iobserve.userbehavior.modeling.iobservedata.EntryCallEvent;
+import my.iobserve.userbehavior.modeling.iobservedata.EntryCallSequenceModel;
+import my.iobserve.userbehavior.modeling.iobservedata.UserSession;
 
 public class SequenceModelBuilder {
 	

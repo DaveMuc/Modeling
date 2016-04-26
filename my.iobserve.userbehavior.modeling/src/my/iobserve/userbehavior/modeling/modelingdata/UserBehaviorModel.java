@@ -1,9 +1,8 @@
-package my.iobserve.userbehavior.modeling.data;
+package my.iobserve.userbehavior.modeling.modelingdata;
 
 import java.util.List;
 
-import my.iobserve.userbehavior.modeling.branchextraction.Branch;
-import my.iobserve.userbehavior.modeling.branchextraction.BranchOperationModel;
+import my.iobserve.userbehavior.modeling.iobservedata.EntryCallSequenceModel;
 
 public class UserBehaviorModel {
 	
@@ -14,7 +13,10 @@ public class UserBehaviorModel {
 	private List<EntryCallSequenceModel> entryCallSequenceModels;
 
 	// result of the branch extraction
-	private List<BranchOperationModel> branchOperationModels;
+	private List<CallBranchModel> callBranchModels;
+	
+	// result of the loop detection
+	private List<CallBranchModel> callLoopBranchModels;
 	
 	
 	public EntryCallSequenceModel getEntryCallSequenceModel() {
@@ -33,12 +35,12 @@ public class UserBehaviorModel {
 		this.entryCallSequenceModels = entryCallSequenceModels;
 	}
 
-	public List<BranchOperationModel> getBranchOperationModels() {
-		return branchOperationModels;
+	public List<CallBranchModel> getBranchOperationModels() {
+		return callBranchModels;
 	}
 
-	public void setBranchOperationModels(List<BranchOperationModel> branchOperationModels) {
-		this.branchOperationModels = branchOperationModels;
+	public void setBranchOperationModels(List<CallBranchModel> branchOperationModels) {
+		this.callBranchModels = branchOperationModels;
 	}
 
 	

@@ -2,8 +2,8 @@ package my.iobserve.userbehavior.modeling.usergroupextraction;
 
 import java.util.List;
 
-import my.iobserve.userbehavior.modeling.data.EntryCallSequenceModel;
-import my.iobserve.userbehavior.modeling.data.UserSessionAsAbsoluteTransitionMatrix;
+import my.iobserve.userbehavior.modeling.iobservedata.EntryCallSequenceModel;
+import my.iobserve.userbehavior.modeling.modelingdata.UserSessionAsAbsoluteTransitionMatrix;
 
 public class UserGroupExtraction {
 	

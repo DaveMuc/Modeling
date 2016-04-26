@@ -3,31 +3,39 @@ package my.iobserve.userbehavior.modeling.branchextraction;
 import java.util.ArrayList;
 import java.util.List;
 
-import my.iobserve.userbehavior.modeling.data.EntryCallSequenceModel;
+import my.iobserve.userbehavior.modeling.iobservedata.EntryCallSequenceModel;
+import my.iobserve.userbehavior.modeling.modelingdata.CallBranchModel;
 
 public class BranchExtraction {
 	
-	private List<EntryCallSequenceModel> entryCallSequenceModels;
-	private List<BranchOperationModel> branchOperationModels = null;
+	private final List<EntryCallSequenceModel> entryCallSequenceModels;
+	private List<CallBranchModel> branchOperationModels = null;
 	
 	public BranchExtraction(List<EntryCallSequenceModel> entryCallSequenceModels) {
 		this.entryCallSequenceModels = entryCallSequenceModels;
 	}
 	
-	public void createBranchOperationModel() {
+	public void createCallBranchModels() {
 		
-		BranchOperationModelCreator modelCreator = new BranchOperationModelCreator();
-		branchOperationModels = new ArrayList<BranchOperationModel>();
+		CallBranchModelCreator modelCreator = new CallBranchModelCreator();
+		branchOperationModels = new ArrayList<CallBranchModel>();
 		
 		for(final EntryCallSequenceModel entryCallSequenceModel:entryCallSequenceModels) {
-			BranchOperationModel branchOperationModel = modelCreator.createBranchOperationModel(entryCallSequenceModel);
+			/**
+			 * Chapter 4.3.4.2 Transformation to the call branch model
+			 */
+			CallBranchModel branchOperationModel = modelCreator.createCallBranchModel(entryCallSequenceModel);
+			/**
+			 * Chapter 4.3.4.3 Calculation of the branch likelihoods
+			 */
 			modelCreator.calculateLikelihoodsOfBranches(branchOperationModel);
+			
 			branchOperationModels.add(branchOperationModel);
 		}
 
 	}
 
-	public List<BranchOperationModel> getBranchOperationModels() {
+	public List<CallBranchModel> getBranchOperationModels() {
 		return branchOperationModels;
 	}
 

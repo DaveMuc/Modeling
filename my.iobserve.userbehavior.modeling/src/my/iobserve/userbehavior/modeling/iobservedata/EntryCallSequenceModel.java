@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ***************************************************************************/
-package my.iobserve.userbehavior.modeling.data;
+package my.iobserve.userbehavior.modeling.iobservedata;
 
 import java.util.List;
+
+import my.iobserve.userbehavior.modeling.modelingdata.WorkloadIntensity;
 
 /**
  * Entry Call Sequence Model according to Fig. 7 in paper

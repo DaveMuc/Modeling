@@ -1,14 +1,13 @@
-package my.iobserve.userbehavior.modeling.branchextraction;
+package my.iobserve.userbehavior.modeling.modelingdata;
 
-import my.iobserve.userbehavior.modeling.data.WorkloadIntensity;
-
-public class BranchOperationModel {
+public class CallBranchModel {
 	
 	private Branch rootBranch;
 	private final WorkloadIntensity workloadIntensity;
 	private final double likelihoodOfUserGroup;
+	private int numberOfBranches;
 	
-	public BranchOperationModel(WorkloadIntensity workloadIntensity, double likelihoodOfUserGroup) {
+	public CallBranchModel(WorkloadIntensity workloadIntensity, double likelihoodOfUserGroup) {
 		this.workloadIntensity = workloadIntensity;
 		this.likelihoodOfUserGroup = likelihoodOfUserGroup;
 	}
@@ -28,6 +27,16 @@ public class BranchOperationModel {
 	public double getLikelihoodOfUserGroup() {
 		return likelihoodOfUserGroup;
 	}
+
+	public int getNumberOfBranches() {
+		return numberOfBranches;
+	}
+
+	public void setNumberOfBranches(int numberOfBranches) {
+		this.numberOfBranches = numberOfBranches;
+	}
+	
+	
 		
 
 }
