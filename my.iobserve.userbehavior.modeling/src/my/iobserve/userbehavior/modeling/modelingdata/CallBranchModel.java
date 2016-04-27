@@ -1,5 +1,7 @@
 package my.iobserve.userbehavior.modeling.modelingdata;
 
+import java.util.List;
+
 public class CallBranchModel {
 	
 	private Branch rootBranch;
@@ -10,6 +12,16 @@ public class CallBranchModel {
 	public CallBranchModel(WorkloadIntensity workloadIntensity, double likelihoodOfUserGroup) {
 		this.workloadIntensity = workloadIntensity;
 		this.likelihoodOfUserGroup = likelihoodOfUserGroup;
+	}
+	
+	public Branch getExaminedBranch(List<Integer> branchGuide) {
+		if(this.rootBranch==null)
+			return null;
+		Branch examinedBranch = this.rootBranch;
+		for(int i=0;i<branchGuide.size();i++) {
+			examinedBranch = examinedBranch.getChildBranches().get(branchGuide.get(i));
+		}
+		return examinedBranch;
 	}
 
 	public Branch getRootBranch() {

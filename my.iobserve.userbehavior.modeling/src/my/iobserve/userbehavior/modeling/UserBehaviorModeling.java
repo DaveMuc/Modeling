@@ -42,25 +42,23 @@ public class UserBehaviorModeling {
 		final UserGroupExtraction extractionOfUserGroups = new UserGroupExtraction(userBehaviorModel.getEntryCallSequenceModel());
 		extractionOfUserGroups.extractUserGroups();
 		final List<EntryCallSequenceModel> entryCallSequenceModels = extractionOfUserGroups.getEntryCallSequenceModelsOfUserGroups();
-		userBehaviorModel.setEntryCallSequenceModels(entryCallSequenceModels);
 		
 		/**
 		 * Chapter 4.3.4 The aggregation of the call sequences
 		 * It aggregates each call sequence model into a call branch model 
 		 * At that, it detects branches and the branch likelihoods
 		 */
-		final BranchExtraction branchExtraction = new BranchExtraction(userBehaviorModel.getEntryCallSequenceModels());
+		final BranchExtraction branchExtraction = new BranchExtraction(entryCallSequenceModels);
 		branchExtraction.createCallBranchModels();
-		final List<CallBranchModel> branchOperationModels = branchExtraction.getBranchOperationModels();
-		userBehaviorModel.setBranchOperationModels(branchOperationModels);
+		final List<CallBranchModel> callBranchModels = branchExtraction.getBranchOperationModels();
 		
 		/**
 		 * Chapter 4.3.5 The detection of iterated behavior
-		 * It detects complete looped branch sequences and single loops within the branch sequences
+		 * It detects loops within the branch sequences
 		 */
-		final LoopDetection loopDetection = new LoopDetection(userBehaviorModel.getBranchOperationModels());
+		final LoopDetection loopDetection = new LoopDetection(callBranchModels);
 		loopDetection.createCallLoopBranchModels();
-		
+		final List<CallBranchModel> callLoopBranchModels = loopDetection.getCallLoopBranchModels();
 		
 		// to set a breakpoint
 		// To delete

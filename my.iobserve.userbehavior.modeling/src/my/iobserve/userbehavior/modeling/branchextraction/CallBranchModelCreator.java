@@ -20,44 +20,41 @@ public class CallBranchModelCreator {
 		
 		// The likelihood of the root branch is always 1
 		callBranchModel.getRootBranch().setBranchLikelihood(1);
-		
+				
 		List<Integer> branchGuide = new ArrayList<Integer>();
+		List<Integer> processedBranchIds = new ArrayList<Integer>();
 		
-		do{
-			while(true) {
-				Branch examinedBranch = getExaminedBranch(branchGuide, callBranchModel.getRootBranch());
-				int startBranchGuideSize = branchGuide.size();
-				if(examinedBranch.getChildBranches().size()==0) {
+		// Iterates over all branches
+		while(processedBranchIds.size()<callBranchModel.getNumberOfBranches()) {
+			
+			Branch examinedBranch = callBranchModel.getExaminedBranch(branchGuide);
+			if(!processedBranchIds.contains(examinedBranch.getBranchId())) {
+				
+				// calculates and stores the child branch likelihoods
+				setChildBranchLikelihoods(examinedBranch);
+				
+				processedBranchIds.add(examinedBranch.getBranchId());
+			}
+			
+			int startBranchGuideSize = branchGuide.size(); 
+			for(int i=0;i<examinedBranch.getChildBranches().size();i++) {
+				if(!processedBranchIds.contains(examinedBranch.getChildBranches().get(i).getBranchId())){
+					branchGuide.add(i);
 					break;
-				} else {
-					for(int i=0;i<examinedBranch.getChildBranches().size();i++) {
-						if(examinedBranch.getChildBranches().get(i).getBranchLikelihood()==0){
-							branchGuide.add(i);
-							break;
-						}
-					}
 				}
-				int endBranchGuideSize = branchGuide.size();
-				if(endBranchGuideSize==startBranchGuideSize)
-					break;
 			}
-			if(branchGuide.size()>0) {
+			int endBranchGuideSize = branchGuide.size();
+			if(endBranchGuideSize==startBranchGuideSize&&branchGuide.size()>0)
 				branchGuide.remove(branchGuide.size()-1);
-				setChildBranchLikelihoods(getExaminedBranch(branchGuide, callBranchModel.getRootBranch()));
-			}
-		}while(branchGuide.size()>0);
+			
+		}
 			
 	}
 	
 	private void setChildBranchLikelihoods(Branch examinedBranch) {
-//		double countOfParentNode = examinedBranch.getBranchSequence().get(examinedBranch.getBranchSequence().size()-1).getCallElement().getAbsoluteCount();
 		double countOfParentNode = examinedBranch.getBranchSequence().get(examinedBranch.getBranchSequence().size()-1).getAbsoluteCount();
 		for(int i=0;i<examinedBranch.getChildBranches().size();i++) {
 			double countOfChildNode;
-//			if(examinedBranch.getChildBranches().get(i).getBranchSequence().get(0).get)
-//				countOfChildNode = examinedBranch.getChildBranches().get(i).getBranchSequence().get(0).getAbsoluteCount();
-//			else 
-//				countOfChildNode = examinedBranch.getChildBranches().get(i).getBranchSequence().get(0).getExitElement().getAbsoluteCount();
 			countOfChildNode = examinedBranch.getChildBranches().get(i).getBranchSequence().get(0).getAbsoluteCount();
 			double likelihhod = countOfChildNode/countOfParentNode;
 			examinedBranch.getChildBranches().get(i).setBranchLikelihood(likelihhod);
