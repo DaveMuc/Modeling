@@ -17,42 +17,29 @@ import my.iobserve.userbehavior.modeling.modelingdata.ExitElement;
 public class CallBranchModelCreator {
 	
 	public void calculateLikelihoodsOfBranches(CallBranchModel callBranchModel) {
-		
 		// The likelihood of the root branch is always 1
 		callBranchModel.getRootBranch().setBranchLikelihood(1);
-				
-		List<Integer> branchGuide = new ArrayList<Integer>();
-		List<Integer> processedBranchIds = new ArrayList<Integer>();
-		
-		// Iterates over all branches
-		while(processedBranchIds.size()<callBranchModel.getNumberOfBranches()) {
-			
-			Branch examinedBranch = callBranchModel.getExaminedBranch(branchGuide);
-			if(!processedBranchIds.contains(examinedBranch.getBranchId())) {
-				
-				// calculates and stores the child branch likelihoods
-				setChildBranchLikelihoods(examinedBranch);
-				
-				processedBranchIds.add(examinedBranch.getBranchId());
-			}
-			
-			int startBranchGuideSize = branchGuide.size(); 
-			for(int i=0;i<examinedBranch.getChildBranches().size();i++) {
-				if(!processedBranchIds.contains(examinedBranch.getChildBranches().get(i).getBranchId())){
-					branchGuide.add(i);
-					break;
-				}
-			}
-			int endBranchGuideSize = branchGuide.size();
-			if(endBranchGuideSize==startBranchGuideSize&&branchGuide.size()>0)
-				branchGuide.remove(branchGuide.size()-1);
-			
+		calculateLikelihoodsOfBranch(callBranchModel.getRootBranch());
+	}
+	
+	private void calculateLikelihoodsOfBranch(Branch branch) {
+		setChildBranchLikelihoods(branch);
+		for(int i=0;i<branch.getChildBranches().size();i++) {
+			calculateLikelihoodsOfBranch(branch.getChildBranches().get(i));
 		}
-			
 	}
 	
 	private void setChildBranchLikelihoods(Branch examinedBranch) {
-		double countOfParentNode = examinedBranch.getBranchSequence().get(examinedBranch.getBranchSequence().size()-1).getAbsoluteCount();
+		double countOfParentNode = 0;
+		if(examinedBranch.getBranchSequence().size()>0) {
+			countOfParentNode = examinedBranch.getBranchSequence().get(examinedBranch.getBranchSequence().size()-1).getAbsoluteCount();
+		} else if(examinedBranch.getChildBranches().size()>0) {
+			for(int i=0;i<examinedBranch.getChildBranches().size();i++) {
+				countOfParentNode += examinedBranch.getChildBranches().get(i).getBranchSequence().get(0).getAbsoluteCount();
+			}
+		} else {
+			countOfParentNode = 1;
+		}
 		for(int i=0;i<examinedBranch.getChildBranches().size();i++) {
 			double countOfChildNode;
 			countOfChildNode = examinedBranch.getChildBranches().get(i).getBranchSequence().get(0).getAbsoluteCount();
@@ -70,6 +57,7 @@ public class CallBranchModelCreator {
 		Branch rootBranch = new Branch();
 		rootBranch.setBranchLikelihood(1);
 		rootBranch.setBranchId(1);
+		rootBranch.setTreeLevel(0);
 		
 		// Descending sort by call sequence length
 		Collections.sort(userSessions, this.SortUserSessionByCallSequenceSize); 
@@ -226,7 +214,7 @@ public class CallBranchModelCreator {
 	private void addNewBranch(Branch examinedBranch, int numberOfBranches) {
 		Branch childBranch = new Branch();
 		numberOfBranches++;
-		childBranch.setBranchId(numberOfBranches);
+//		childBranch.setBranchId(numberOfBranches);
 		examinedBranch.addBranch(childBranch);
 	}
 

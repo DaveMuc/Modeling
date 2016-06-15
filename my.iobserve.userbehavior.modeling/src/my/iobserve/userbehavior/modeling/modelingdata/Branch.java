@@ -6,10 +6,11 @@ import java.util.List;
 public class Branch {
 	
 	private int branchId;
+	private int treeLevel;
 	private List<BranchElement> branchSequence;
 	private double branchLikelihood;
 	private List<Branch> childBranches;
-	private int loopCount = 1;
+	private int loopCountOfChildBranches = 0;
 	
 	public Branch() {
 		branchSequence = new ArrayList<BranchElement>();
@@ -45,12 +46,12 @@ public class Branch {
 		this.childBranches = childBranches;
 	}
 
-	public int getLoopCount() {
-		return loopCount;
+	public int getLoopCountOfChildBranches() {
+		return loopCountOfChildBranches;
 	}
 
-	public void setLoopCount(int loopCount) {
-		this.loopCount = loopCount;
+	public void setLoopCountOfChildBranches(int loopCountOfChildBranches) {
+		this.loopCountOfChildBranches = loopCountOfChildBranches;
 	}
 
 	public int getBranchId() {
@@ -59,6 +60,14 @@ public class Branch {
 
 	public void setBranchId(int branchId) {
 		this.branchId = branchId;
+	}
+
+	public int getTreeLevel() {
+		return treeLevel;
+	}
+
+	public void setTreeLevel(int treeLevel) {
+		this.treeLevel = treeLevel;
 	}
 	
 	

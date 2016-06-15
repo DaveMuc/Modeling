@@ -78,7 +78,7 @@ public class ClusteringPrePostProcessing {
 		for(int k=0;k<numberOfClusters;k++) {
 			
 			List<UserSession> sessions = new ArrayList<UserSession>();
-			String instancesBelongingToCluster = "Cluster "+k+": ";
+//			String instancesBelongingToCluster = "Cluster "+k+": ";
 			int instanceNumber = 0;
 			double countOfAssigendUserSessions = 0;
 			
@@ -87,14 +87,14 @@ public class ClusteringPrePostProcessing {
 				if(clusterNum==k) {
 					sessions.add(callSequenceModel.getUserSessions().get(instanceNumber));
 					countOfAssigendUserSessions++;
-					instancesBelongingToCluster = instancesBelongingToCluster + "Instance"+instanceNumber+" ";
+//					instancesBelongingToCluster = instancesBelongingToCluster + "Instance"+instanceNumber+" ";
 				}
 				instanceNumber++;
 			}
 			
 			double relativeFrequencyOfUserGroup = countOfAssigendUserSessions/countOfAbsoluteUserSessions;
 			entryCallSequenceModels.add(new EntryCallSequenceModel(sessions, relativeFrequencyOfUserGroup));
-			System.out.println(instancesBelongingToCluster);
+//			System.out.println(instancesBelongingToCluster);
 		}
 		
 		return entryCallSequenceModels;
@@ -165,7 +165,6 @@ public class ClusteringPrePostProcessing {
 	/**
 	 * David Peter
 	 * Used from package org.iobserve.analysis.filter.TEntryEventSequence;
-	 * Changed to double values
 	 */
 	/**
 	 * Calculate the inter arrival time of the given user sessions

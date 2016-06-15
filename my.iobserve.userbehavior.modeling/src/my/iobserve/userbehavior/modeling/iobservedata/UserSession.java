@@ -187,6 +187,9 @@ public class UserSession {
 		return entryTime;
 	}
 
+	/**
+	 * Added David Peter
+	 */
 	public List<EntryCallEvent> getEvents() {
 		return events;
 	}

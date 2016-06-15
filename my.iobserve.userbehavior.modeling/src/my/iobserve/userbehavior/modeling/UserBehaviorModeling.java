@@ -11,16 +11,16 @@ import my.iobserve.userbehavior.modeling.branchextraction.BranchExtraction;
 import my.iobserve.userbehavior.modeling.iobservedata.EntryCallSequenceModel;
 import my.iobserve.userbehavior.modeling.loopdetection.LoopDetection;
 import my.iobserve.userbehavior.modeling.modelingdata.CallBranchModel;
-import my.iobserve.userbehavior.modeling.modelingdata.UserBehaviorModel;
 import my.iobserve.userbehavior.modeling.usergroupextraction.UserGroupExtraction;
 
 public class UserBehaviorModeling {
 		
-	private UserBehaviorModel userBehaviorModel;
+	private final EntryCallSequenceModel inputEntryCallSequenceModel;
+	private final int numberOfUserGroupsFromInputUsageModel;
 	
-	public UserBehaviorModeling (EntryCallSequenceModel entryCallSequenceModel) {
-		userBehaviorModel = new UserBehaviorModel();
-		this.userBehaviorModel.setEntryCallSequenceModel(entryCallSequenceModel);
+	public UserBehaviorModeling (EntryCallSequenceModel inputEntryCallSequenceModel, int numberOfUserGroupsFromInputUsageModel) {
+		this.inputEntryCallSequenceModel = inputEntryCallSequenceModel;
+		this.numberOfUserGroupsFromInputUsageModel = numberOfUserGroupsFromInputUsageModel;
 	}
 
 	/**
@@ -39,7 +39,7 @@ public class UserBehaviorModeling {
 		 * - the likelihood of its user group
 		 * - the parameters for the workload intensity
 		 */
-		final UserGroupExtraction extractionOfUserGroups = new UserGroupExtraction(userBehaviorModel.getEntryCallSequenceModel());
+		final UserGroupExtraction extractionOfUserGroups = new UserGroupExtraction(inputEntryCallSequenceModel, numberOfUserGroupsFromInputUsageModel);
 		extractionOfUserGroups.extractUserGroups();
 		final List<EntryCallSequenceModel> entryCallSequenceModels = extractionOfUserGroups.getEntryCallSequenceModelsOfUserGroups();
 		

@@ -10,7 +10,7 @@ import weka.core.Instances;
 
 public class XMeansClustering extends AbstractClustering {
 	
-	public ClusteringResults clusterSessionsWithXMeans(List<String> listOfDistinctOperationSignatures, List<UserSessionAsAbsoluteTransitionMatrix> absoluteTransitionModel){
+	public ClusteringResults clusterSessionsWithXMeans(List<String> listOfDistinctOperationSignatures, List<UserSessionAsAbsoluteTransitionMatrix> absoluteTransitionModel, int numberOfUserGroupsFromInputUsageModel){
 		
 		ClusteringResults xMeansClusteringResults = null;
 		
@@ -27,11 +27,16 @@ public class XMeansClustering extends AbstractClustering {
 			int[] clustersize = null;
 			int[] assignments = new int[instances.numInstances()];
 			
-			int numberOfClustersMin = 2;
-			int numberOfClustersMax = 2;
+			int numberOfClustersMin = numberOfUserGroupsFromInputUsageModel - 1;
+			int numberOfClustersMax = numberOfUserGroupsFromInputUsageModel + 1;
 			
+			if(numberOfClustersMin<1)
+				numberOfClustersMin = 1;
+			if(numberOfClustersMax<1)
+				numberOfClustersMax = 1;
 			xmeans.setMinNumClusters(numberOfClustersMin);
 			xmeans.setMaxNumClusters(numberOfClustersMax);
+			
 
 			xmeans.buildClusterer(instances);
 			

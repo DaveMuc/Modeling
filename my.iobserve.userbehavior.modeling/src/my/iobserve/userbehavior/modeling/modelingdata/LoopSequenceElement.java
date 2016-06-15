@@ -3,27 +3,31 @@ package my.iobserve.userbehavior.modeling.modelingdata;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LoopElement implements BranchElement {
+public class LoopSequenceElement implements BranchElement {
 	
-	private List<CallElement> loopSequence;
+	private List<BranchElement> loopSequence;
 	private int loopCount;
 	private int startIndexInBranchSequence;
 	private int endIndexInBranchSequence;
 	private int numberOfReplacedElements;
 	
-	public LoopElement() {
-		loopSequence = new ArrayList<CallElement>();
+	public LoopSequenceElement() {
+		loopSequence = new ArrayList<BranchElement>();
 	}
 	
-	public void addCallElementToLoopSequence(CallElement callElement) {
-		loopSequence.add(callElement);
+	public void addCallElementToLoopSequence(BranchElement branchElement) {
+		loopSequence.add(branchElement);
+	}
+	
+	public void addCallElementToLoopSequence(int index, BranchElement branchElement) {
+		loopSequence.add(index, branchElement);
 	}
 
-	public List<CallElement> getLoopSequence() {
+	public List<BranchElement> getLoopSequence() {
 		return loopSequence;
 	}
 
-	public void setLoopSequence(List<CallElement> loopSequence) {
+	public void setLoopSequence(List<BranchElement> loopSequence) {
 		this.loopSequence = loopSequence;
 	}
 

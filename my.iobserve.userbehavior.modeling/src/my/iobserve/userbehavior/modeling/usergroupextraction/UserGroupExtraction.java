@@ -7,11 +7,13 @@ import my.iobserve.userbehavior.modeling.modelingdata.UserSessionAsAbsoluteTrans
 
 public class UserGroupExtraction {
 	
-	private EntryCallSequenceModel entryCallSequenceModel;
+	private final EntryCallSequenceModel entryCallSequenceModel;
+	private final int numberOfUserGroupsFromInputUsageModel;
 	private List<EntryCallSequenceModel> entryCallSequenceModelsOfUserGroups = null;
 	
-	public UserGroupExtraction(EntryCallSequenceModel entryCallSequenceModel) {
+	public UserGroupExtraction(EntryCallSequenceModel entryCallSequenceModel, int numberOfUserGroupsFromInputUsageModel) {
 		this.entryCallSequenceModel = entryCallSequenceModel;
+		this.numberOfUserGroupsFromInputUsageModel = numberOfUserGroupsFromInputUsageModel;
 	}
 	
 	public void extractUserGroups() {
@@ -38,8 +40,8 @@ public class UserGroupExtraction {
 		 * Chapter 4.3.3.3 Clustering of user sessions
 		 * Clustering of the absolute transition matrices to obtain user groups 
 		 */
-		xMeansClusteringResults = xMeansClustering.clusterSessionsWithXMeans(listOfDistinctOperationSignatures, absoluteTransitionModel);
-		kMeansClusteringResults = kMeansClustering.clusterSessionsWithKMeans(listOfDistinctOperationSignatures, absoluteTransitionModel);
+		xMeansClusteringResults = xMeansClustering.clusterSessionsWithXMeans(listOfDistinctOperationSignatures, absoluteTransitionModel, numberOfUserGroupsFromInputUsageModel);
+//		kMeansClusteringResults = kMeansClustering.clusterSessionsWithKMeans(listOfDistinctOperationSignatures, absoluteTransitionModel, numberOfUserGroupsFromInputUsageModel);
 		
 		/**
 		 * Chapter 4.3.3.4 Obtaining the user groups´ call sequence models 
@@ -47,8 +49,8 @@ public class UserGroupExtraction {
 		 */
 		xMeansClusteringResults.printClusteringResults();
 		List<EntryCallSequenceModel> entryCallSequenceModelsOfXMeansClustering = clusteringProcessing.getForEachUserGroupAEntryCallSequenceModel(xMeansClusteringResults, entryCallSequenceModel);
-		kMeansClusteringResults.printClusteringResults();
-		List<EntryCallSequenceModel> entryCallSequenceModelsOfKMeansClustering = clusteringProcessing.getForEachUserGroupAEntryCallSequenceModel(kMeansClusteringResults, entryCallSequenceModel);
+//		kMeansClusteringResults.printClusteringResults();
+//		List<EntryCallSequenceModel> entryCallSequenceModelsOfKMeansClustering = clusteringProcessing.getForEachUserGroupAEntryCallSequenceModel(kMeansClusteringResults, entryCallSequenceModel);
 		
 		/**
 		 * Chapter 4.3.3.5 Obtaining the user groups´ workload intensity 

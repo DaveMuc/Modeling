@@ -20,8 +20,8 @@ public class LoopDetection {
 		callLoopBranchModels = new ArrayList<CallBranchModel>();
 		
 		for(CallBranchModel callBranchModel : callBranchModels) {
-			CallBranchModel callLoopBranchModel = modelCreator.detectLoopsInCallBranchModel(callBranchModel);
-			callLoopBranchModels.add(callLoopBranchModel);
+			modelCreator.detectLoopsInCallBranchModel(callBranchModel);
+			callLoopBranchModels.add(callBranchModel);
 		}
 		
 	}

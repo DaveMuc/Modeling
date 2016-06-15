@@ -18,11 +18,12 @@ public class TestOfUserBehaviorModeling {
 	
 	static String[] operationSigantures = new String [] {"search","browse","add","pay","delete","get","set","clear"};
 	static EntryCallSequenceModel entryCallSequenceModel;
-	static int numberOfUserSessions = 500;
+	static int numberOfUserSessions = 10000;
 	static int minNumberOfCallEvents = 4;
 	static int maxNumberOfCallEvents = 10;
 	static int minEntryTime = 1000;
 	static int maxEntryTime = 9000;
+	static int numberOfUserGroupsFromInputUsageModel = 0;
 	
 	/**
 	 * Creates a entryCallSequenceModel that consists of a defined number of user sessions
@@ -78,7 +79,7 @@ public class TestOfUserBehaviorModeling {
 
 	@Test
 	public void test() throws IOException {
-		UserBehaviorModeling userBehaviorModeling = new UserBehaviorModeling(entryCallSequenceModel);
+		UserBehaviorModeling userBehaviorModeling = new UserBehaviorModeling(entryCallSequenceModel, numberOfUserGroupsFromInputUsageModel);
 		userBehaviorModeling.modelUserBehavior();
 	}
 

@@ -10,7 +10,7 @@ import weka.core.Instances;
 
 public class KMeansClustering extends AbstractClustering {
 	
-	public ClusteringResults clusterSessionsWithKMeans(List<String> listOfDistinctOperationSignatures, List<UserSessionAsAbsoluteTransitionMatrix> absoluteTransitionModel) {
+	public ClusteringResults clusterSessionsWithKMeans(List<String> listOfDistinctOperationSignatures, List<UserSessionAsAbsoluteTransitionMatrix> absoluteTransitionModel, int numberOfUserGroupsFromInputUsageModel) {
 		
 		ClusteringResults kMeansClusteringResults = null;
 		
@@ -26,7 +26,9 @@ public class KMeansClustering extends AbstractClustering {
 	
 			int[] assignments = null;
 			
-			int numberOfClusters = 2;
+			int numberOfClusters = numberOfUserGroupsFromInputUsageModel;
+			if(numberOfClusters<1)
+				numberOfClusters = 1;
 			kmeans.setNumClusters(numberOfClusters);
 
 			kmeans.buildClusterer(instances);

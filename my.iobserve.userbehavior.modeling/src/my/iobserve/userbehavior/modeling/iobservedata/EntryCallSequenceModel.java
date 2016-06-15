@@ -33,8 +33,8 @@ public class EntryCallSequenceModel {
 	
 	/**
 	 * Added David Peter, 15.04.2016
-	 * Likelihood of each user group after the clustering
-	 * Interarrival time of the related user sessions, usable for an open workload
+	 * Likelihood of the user group 
+	 * Workload intensity of the user group
 	 */
 	private final double likelihoodOfUserGroup;
 	private WorkloadIntensity workloadIntensity;
